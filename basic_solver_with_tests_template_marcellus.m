@@ -18,23 +18,23 @@ function basic_solver_with_tests_template()
     
 
     %Secant method example test
-    % x0_guess = -5;
-    % x1_guess = 2;
-    % plot(x0_guess,test_func01(x0_guess),'bo','markerfacecolor','b','markersize',5);
-    % plot(x1_guess,test_func01(x1_guess),'ko','markerfacecolor','k','markersize',5);
-    % 
-    % x_sol = secant_solver(@test_func01,x0_guess,x1_guess);
-    % plot(x_sol,test_func01(x_sol),'go','markerfacecolor','g','markersize',5);
+    x0_guess = -5;
+    x1_guess = 2;
+    plot(x0_guess,test_func01(x0_guess),'bo','markerfacecolor','b','markersize',5);
+    plot(x1_guess,test_func01(x1_guess),'ko','markerfacecolor','k','markersize',5);
+     
+    x_sol = secant_solver(@test_func01,x0_guess,x1_guess);
+    plot(x_sol,test_func01(x_sol),'go','markerfacecolor','g','markersize',5);
 
     
     %Bisection method example test
-    x_left = -5;
-    x_right = 2;
-    plot(x_left,test_func01(x_left),'bo','markerfacecolor','b','markersize',5);
-    plot(x_right,test_func01(x_right),'ko','markerfacecolor','k','markersize',5);
+    %x_left = -5;
+    %x_right = 2;
+    %plot(x_left,test_func01(x_left),'bo','markerfacecolor','b','markersize',5);
+    %plot(x_right,test_func01(x_right),'ko','markerfacecolor','k','markersize',5);
      
-    x_sol = bisection_solver(@test_func01,x_left,x_right);
-    plot(x_sol,test_func01(x_sol),'go','markerfacecolor','g','markersize',5);
+    %x_sol = bisection_solver(@test_func01,x_left,x_right);
+    %plot(x_sol,test_func01(x_sol),'go','markerfacecolor','g','markersize',5);
 end
 
 
@@ -51,7 +51,7 @@ end
 
 function x = bisection_solver(fun,x_left,x_right)
 x = (x_left+x_right)/2; 
-while abs(test_func01(x))>.0001
+while abs(test_func01(x))>10^-14
 if test_func01(x)>0    
 x_right=x;
 x = (x_left+x_right)/2; 
@@ -71,5 +71,11 @@ function x = newton_solver(fun,x0)
 end
 
 function x = secant_solver(fun,x0, x1)
-    x = x0+1; %this is just dummy code. replace this with your code
+    x = x1-(test_func01(x1)/((test_func01(x1)-test_func01(x0))/(x1-x0)));
+    while abs(test_func01(x))>10^-14
+        x0=x1;
+        x1=x;
+        x = x1-(test_func01(x1)/((test_func01(x1)-test_func01(x0))/(x1-x0)));
+    end
+    x
 end
