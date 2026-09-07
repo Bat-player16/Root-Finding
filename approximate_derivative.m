@@ -6,6 +6,7 @@
 %OUTPUTS:
 %dfdx: approximation of fun'(x)
 %d2fdx2: approximation of fun''(x)
+
 function [dfdx,d2fdx2] = approximate_derivative(fun,x)
     %set the step size to be tiny
     delta_x = 1e-6;

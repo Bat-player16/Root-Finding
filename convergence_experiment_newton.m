@@ -1,5 +1,5 @@
 %starter code for convergence experiments
-function convergence_experiment_newtons()
+function convergence_experiment_newton()
 
 %Initial guess near the root we are analyzing convergence behavior
 %(you will need to change this depending on the test function and root)
@@ -78,54 +78,54 @@ loglog(abs_error_current,abs_error_next,...
     'ro','markerfacecolor','r','markersize',2);
 xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
 title('Error Convergence Plot for Raw Data');
-% hold on
-% 
-% % Clean the data step 5
-% %example for how to filter the error data
-% %currently have error_list0, error_list1, index_list
-% 
-% %data points to be used in the regression
-% x_regression = []; % e_n
-% y_regression = []; % e_{n+1}
-% filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
-% 
-% %iterate through the collected data
-% for n=1:length(index_list)
-%     %if the error is not too big or too small
-%     %and it was enough iterations into the trial...
-%     if abs_error_current(n)>filter_list(1) && ...
-%        abs_error_current(n)<filter_list(2) && ...
-%        abs_error_next(n)>filter_list(3) && ...
-%        abs_error_next(n)<filter_list(4) && ...
-%        index_list(n)>filter_list(5)
-% 
-%         %then add it to the set of points for regression
-%         x_regression(end+1) = abs_error_current(n);
-%         y_regression(end+1) = abs_error_next(n);
-%     end % closes step 5 loop
-% end 
-% 
-% loglog(x_regression,y_regression,...
-%     'bo','markerfacecolor','r','markersize',2);
-% xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-% title('Error Convergence Plot for Filtered Data');
-% hold on
-% 
-% % step 6 generate a loglog plot
-% [p,k] = generate_error_fit(x_regression,y_regression);
-% 
-% fprintf('p = %f\n', p);
-% fprintf('k = %f\n', k);
-% 
-% %example for how to plot fit line
-% %generate x data on a logarithmic range
-% fit_line_x = 10.^[-16:0.01:1];
-% 
-% %compute the corresponding y values
-% fit_line_y = k*fit_line_x.^p;
-% 
-% %plot on a loglog plot
-% loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
+hold on
+
+% Clean the data step 5
+%example for how to filter the error data
+%currently have error_list0, error_list1, index_list
+
+%data points to be used in the regression
+x_regression = []; % e_n
+y_regression = []; % e_{n+1}
+filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
+
+%iterate through the collected data
+for n=1:length(index_list)
+    %if the error is not too big or too small
+    %and it was enough iterations into the trial...
+    if abs_error_current(n)>filter_list(1) && ...
+       abs_error_current(n)<filter_list(2) && ...
+       abs_error_next(n)>filter_list(3) && ...
+       abs_error_next(n)<filter_list(4) && ...
+       index_list(n)>filter_list(5)
+
+        %then add it to the set of points for regression
+        x_regression(end+1) = abs_error_current(n);
+        y_regression(end+1) = abs_error_next(n);
+    end % closes step 5 loop
+end 
+
+loglog(x_regression,y_regression,...
+    'bo','markerfacecolor','r','markersize',2);
+xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
+title('Error Convergence Plot for Filtered Data');
+hold on
+
+% step 6 generate a loglog plot
+[p,k] = generate_error_fit(x_regression,y_regression);
+
+fprintf('p = %f\n', p);
+fprintf('k = %f\n', k);
+
+%example for how to plot fit line
+%generate x data on a logarithmic range
+fit_line_x = 10.^[-16:0.01:1];
+
+%compute the corresponding y values
+fit_line_y = k*fit_line_x.^p;
+
+%plot on a loglog plot
+loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
 end
 
 % % step 7
@@ -143,6 +143,7 @@ end
 %when passing this function as an argument to a solver,
 %you'll need to use the handle operator
 %ex. solver(@test_func01,x_guess)
+
 function [fval,dfdx] = test_func01(x)
     fval = (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6);
     dfdx = 3*(x.^2)/100 - 2*x/8 + 2 +(6/2)*cos(x/2+6) - exp(x/6)/6;
