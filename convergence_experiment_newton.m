@@ -51,7 +51,7 @@ for n = 1:num_iter
 
     %Call your root finder using the recording function
     %you will need to change this, depending on the solver
-    x_root = newton_solver(f_record,x0,dxtol,ftol,max_iter,dxmax);
+    x_root = newton_solver_error(f_record,x0,dxtol,ftol,max_iter,dxmax);
 
     %See what input values were used when f_record was called:
     input_list = my_recorder.get_input_list();
@@ -126,23 +126,19 @@ fit_line_y = k*fit_line_x.^p;
 
 %plot on a loglog plot
 loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
-end
 
-% % step 7
-% x = 0.5;
-% 
-% [dfdx,d2fdx2] = approximate_derivative(@(x) ...
-% (x.^3)/100 - (x.^2)/8 + 2*x + ...
-% 6*sin(x/2+6) -.7 - exp(x/6), x);
-% 
-% fprintf('First derivative = %f\n',dfdx);
-% fprintf('Second derivative = %f\n',d2fdx2);
+% step 7 find the first and second derivatives
+x = 0.5;
+[dfdx,d2fdx2] = approximate_derivative(@(x)(x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6), x);
+fprintf('First derivative = %f\n',dfdx);
+fprintf('Second derivative = %f\n',d2fdx2);
 
-%Definition of the test function and its derivative (as a single function):
-%This definition uses the function keyword
-%when passing this function as an argument to a solver,
-%you'll need to use the handle operator
-%ex. solver(@test_func01,x_guess)
+% Definition of the test function and its derivative (as a single function):
+% This definition uses the function keyword
+% when passing this function as an argument to a solver,
+% you'll need to use the handle operator
+% ex. solver(@test_func01,x_guess)
+end 
 
 function [fval,dfdx] = test_func01(x)
     fval = (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6);

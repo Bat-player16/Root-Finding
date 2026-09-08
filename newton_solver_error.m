@@ -16,7 +16,7 @@
 % 1 = succeeded, 0 = reached max iterations, -1 = the the change was too
 % big
 
-function [x, exit_flag, x_list] = newton_solvers(fun,x0,dxtol,ftol,max_iter,dxmax)
+function [x, exit_flag, x_list] = newton_solver_error(fun,x0,dxtol,ftol,max_iter,dxmax)
 % Stores the value in x_list
     x_list = x0;
 % Max at max iterations
@@ -54,13 +54,6 @@ function [x, exit_flag, x_list] = newton_solvers(fun,x0,dxtol,ftol,max_iter,dxma
 % Reached maximum number of iterations
 x = x0;
 exit_flag = 0;
-end
-
-% Test
-function [fval,dfdx] = test_func01(x)
-    fval = (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6);
-    dfdx = 3*(x.^2)/100 - 2*x/8 + 2 +(6/2)*cos(x/2+6) - exp(x/6)/6;
-end
 
 % Calculate for more accurate ref root aka xroot
 [x_root, exit_flag, xroot_list] = newton_solvers(@test_func01, -3,1e-14 ,1e-14, 1000, 1e6);
@@ -69,3 +62,12 @@ fprintf('x_root = %f, exit_flag = %d\n', x_root, exit_flag);
 % Calculate for x normal tolerance
 [x, exit_flag, x_list] = newton_solvers(@test_func01, -3, 1e-6, 1e-6, 100,1e6);
 fprintf('x = %f, exit_flag = %d\n', x, exit_flag);
+
+end
+
+% % Test
+% function [fval,dfdx] = test_func01(x)
+%     fval = (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6);
+%     dfdx = 3*(x.^2)/100 - 2*x/8 + 2 +(6/2)*cos(x/2+6) - exp(x/6)/6;
+% end
+

@@ -20,5 +20,5 @@ function [dfdx,d2fdx2] = approximate_derivative(fun,x)
     dfdx = (f_right-f_left)/(2*delta_x);
     
     %approximate the second derivative
-    d2fdx2 = (f_right-2*f_0+f_left)/(delta_xˆ2);
+    d2fdx2 = (f_right-2*f_0+f_left)/(delta_x.^2);
 end
