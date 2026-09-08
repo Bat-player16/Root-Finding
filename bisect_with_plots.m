@@ -41,12 +41,14 @@ legend('y = 0', 'f(x)', 'root', 'Location', 'best')
 end 
 
 
+
 %define bisection method
 function root = bisect(f, l, r, dxtol,ftol, max_iter)
 % check are l and r different signs
     if f(l) * f(r) > 0 
     error ('same sign guess'); 
     end 
+
     iter = 1;
     m = (l + r) / 2;
 
@@ -58,6 +60,7 @@ while iter <= max_iter && (r-l) > dxtol && abs(f(m))>ftol %check to make sure in
     % (-)*(+) or (+)*(-) < 0 this can check the first rule and then change the
     % right coordinate to the midpoint, otherwise it fulfills the second rule
     m = (l + r) / 2;
+ 
     if f(l) * f(m) < 0 
         r = m;
     else 
@@ -71,3 +74,4 @@ end
  
 
 
+    
