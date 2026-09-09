@@ -108,8 +108,9 @@ end
 loglog(x_regression,y_regression,...
     'bo','markerfacecolor','b','markersize',2);
 xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-title("Newton's Method");
+title("Newton's Method Convergence Rate Plot");
 legend('Raw Data','Filtered Data','Location','best','FontSize',14);
+axis([1e-17,1e1,1e-17,1e1])
 % set(gca,'FontSize',12);
 
 % step 6 generate a loglog plot
