@@ -13,3 +13,12 @@ Secant's Files
 -generate_error_fit_secant
 -secant_solver_error
 -the_function
+
+Bisection's Files
+-bisect
+-bisect_converge
+-bisect_with_plots
+
+fzero's Files
+-accruateroot
+-fzero_converge
