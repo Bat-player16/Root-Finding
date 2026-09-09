@@ -3,10 +3,11 @@ fun = test_func01; % set function to variable so that multiple functions can be 
 dxtol = 1e-14; % interval tolerance 
 ftol = 1e-100; % root tolerance 
 max_iter = 1000; % max number of iterations
-l_list = 0.1*rand(1,150); % left guesses
-r_list = 1 + 0.5*rand(1,150); % right guesses
+l_list = linspace(-5,-2,max_iter);
+r_list = linspace(2,5,max_iter); % right guesses
 true_root = 0.717441246283601; % very exact root to use to compute error
-
+l=-2;
+r=5;
 
 
   [root, iter, tries] = bisect (fun, l, r, dxtol, ftol, max_iter); % call function 
