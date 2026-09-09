@@ -106,10 +106,11 @@ for n=1:length(index_list)
 end 
 
 loglog(x_regression,y_regression,...
-    'bo','markerfacecolor','r','markersize',2);
+    'bo','markerfacecolor','b','markersize',2);
 xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-title('Error Convergence Plot for Filtered Data');
-hold on
+title("Newton's Method");
+legend('Raw Data','Filtered Data','Location','best','FontSize',14);
+% set(gca,'FontSize',12);
 
 % step 6 generate a loglog plot
 [p,k] = generate_error_fit(x_regression,y_regression);
@@ -125,7 +126,7 @@ fit_line_x = 10.^[-16:0.01:1];
 fit_line_y = k*fit_line_x.^p;
 
 %plot on a loglog plot
-loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
+loglog(fit_line_x,fit_line_y,'k-','linewidth',2, 'DisplayName','Line of Best Fit');
 
 % step 7 find the first and second derivatives
 x = 0.5;
