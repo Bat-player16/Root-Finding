@@ -2,10 +2,10 @@
 Finding Roots via Bisection Method, Newton’s Method, and the Secant Method
 
 Newton's Files
--approximate_derivative
--convergence_experiment_newton
--generate_error_fit
--input_recorder
+-newton_approximate_derivative
+-newton_onvergence_experiment_newton
+-newton_generate_error_fit
+-newton_input_recorder
 -newton_solver_error
 
 Secant's Files
