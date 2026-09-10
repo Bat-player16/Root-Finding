@@ -13,6 +13,7 @@ Secant's Files
 -generate_error_fit_secant
 -secant_solver_error
 -the_function
+-input_recorder
 
 Bisection's Files
 -bisect
