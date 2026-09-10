@@ -105,7 +105,10 @@ end
 loglog(x_regression,y_regression,...
     'bo','markerfacecolor','r','markersize',2);
 xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-title('Error Convergence Plot for Filtered Data');
+title('Secant Method Convergence Rate Plot');
+xlim([10^-16,1])
+ylim([10^-17,1])
+legend('Raw Data', 'Filtered Data', 'Location','best')
 hold on
 
 %%
@@ -125,7 +128,7 @@ fit_line_x = 10.^[-16:0.01:1];
 fit_line_y = k*fit_line_x.^p;
 
 %plot on a loglog plot
-loglog(fit_line_x,fit_line_y,'k-','linewidth',2)
+loglog(fit_line_x,fit_line_y,'k-','linewidth',2, 'DisplayName','Line of Best Fit')
 end
 
 % % step 7
