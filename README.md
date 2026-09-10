@@ -18,7 +18,6 @@ Secant's Files
 Bisection's Files
 -bisect
 -bisect_converge
--bisect_with_plots
 
 fzero's Files
 -accruateroot
