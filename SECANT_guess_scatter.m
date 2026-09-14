@@ -48,7 +48,7 @@ guess_history_1=[];
 total_n=0;
 %loop through each trial
 for i = 1:per_iter
-    x0=x0_list(i)
+    x0=x0_list(i);
     for n = 1:num_iter
         x1=x1_list(n);
     total_n=total_n+1;
@@ -71,7 +71,9 @@ end
  hold on
  plot(guess_history_0,guess_history_1, 'r.')
  plot(good_results_0, good_results_1, 'b.')
- legend('Failed Guesses', 'Successful Guesses','Location','best' )
+ legend('Failed Guesses', 'Successful Guesses','Location','northwest' )
  title('Secant Method Sigmoid Function Guess Convergence ')
 xlabel('x0 guesses'); ylabel('x1 guesses');
+xline(target_root,'w-','LineWidth',2,'HandleVisibility', 'off');
+yline(target_root,'w-', 'LineWidth',2,'HandleVisibility', 'off');
 end
