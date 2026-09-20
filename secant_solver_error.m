@@ -111,21 +111,22 @@
 % end
 
 function [root_list] = secant_solver_error(fun,x0, x1, min_dy, iter, max_iter, min_denom,x_diff)
-denominator=((the_function(x1)-the_function(x0))/(x1-x0));    
-x = x1-the_function(x1)/denominator;
+denominator=((fun(x1)-fun(x0))/(x1-x0));    
+x = x1-fun(x1)/denominator;
 root_list=[1,1];
-    root_list(1)=[x];
-    while abs(the_function(x))>min_dy && iter<max_iter && abs(x1-x0)>x_diff
+root_list(1)=x;
+
+while abs(fun(x))>min_dy && iter<max_iter && abs(x1-x0)>x_diff
         iter=iter+1;
         x0=x1;
         x1=x;
-        denominator=((the_function(x1)-the_function(x0))/(x1-x0));  
-        if denominator<min_denom
+        denominator=((fun(x1)-fun(x0))/(x1-x0));  
+        if abs(denominator)<min_denom
             fprintf('Error: Division by ~0')
-        break;
-        else
-        x = x1-the_function(x1)/denominator;
-        root_list(iter)=[x];
-    end
-    end
+            break;
+        end
+        x = x1-fun(x1)/denominator;
+        root_list(iter)=x;
+    
+end
 end

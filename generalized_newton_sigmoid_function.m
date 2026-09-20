@@ -46,14 +46,16 @@ plot(x0_list(success_list),y_list(success_list),'bo','MarkerSize',1, ...
     'MarkerFaceColor','b','DisplayName','successful Convergence');
 % plot failed initials guesses
 plot(x0_list(~success_list),y_list(~success_list),'ro','MarkerSize',1, ...
-    'MarkerFaceColor','b','DisplayName','failed Convergence');
+    'MarkerFaceColor','r','DisplayName','failed Convergence');
 %plot root
 plot(target_root,0,'ko','MarkerSize',12, ...
     'MarkerFaceColor','b','DisplayName','root')
 yline(0,'k--','LineWidth',1.5,'Displayname','y=0');
-xlabel ('Function Input, x','FontSize',14);
-ylabel ('Function Output, f(x)','FontSize',14);
+xlabel ('Function Input, x (-)','FontSize',14);
+ylabel ('Function Output, f(x) (-)','FontSize',14);
 title ("Newton's Method: Convergence of Inital Guesses for Sigmoid Function",'FontSize', 11)
 legend('Location','best','FontSize',10);
+xlim([4 50]);
+ylim([-4 6]);
 hold off
 end

@@ -1,17 +1,17 @@
-test_func01 = @(x) (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6); % define function that is being evaluated 
-fun = test_func01; % set function to variable so that multiple functions can be used 
-dxtol = 1e-14; % interval tolerance 
-ftol = 1e-100; % root tolerance 
-max_iter = 1000; % max number of iterations
-l_list = linspace(-5,-2,max_iter);
-r_list = linspace(2,5,max_iter); % right guesses
-true_root = 0.717441246283601; % very exact root to use to compute error
-l=-2;
-r=5;
+function [p,k,eb,e1b,x_regression,y_regression,root_t] = bisect_converge(fun,dxtol,ftol,max_iter,l_list,r_list,true_root,filter_list)
 
-
-  [root, iter, tries] = bisect (fun, l, r, dxtol, ftol, max_iter); % call function 
-  fprintf('bisection root: %.6f  iters:%d\n', root, iter); % print the found root and number of attempts 
+% test_func01 = @(x) (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2+6) -.7 - exp(x/6); % define function that is being evaluated 
+% fun = test_func01; % set function to variable so that multiple functions can be used 
+% dxtol = 1e-14; % interval tolerance 
+% ftol = 1e-100; % root tolerance 
+% max_iter = 1000; % max number of iterations
+% l_list = linspace(-5,-2,max_iter);
+% r_list = linspace(2,5,max_iter); % right guesses
+% true_root = 0.717441246283601; % very exact root to use to compute error
+% l=-2;
+% r=5;
+  %[root, iter, tries] = bisect (fun, l, r, dxtol, ftol, max_iter); % call function 
+  %fprintf('bisection root: %.6f  iters:%d\n', root, iter); % print the found root and number of attempts 
 
   eb = []; % current error
   e1b = [];  % error n+1
@@ -28,7 +28,6 @@ r=5;
           eb = [eb, et(1:end-1)];
           e1b = [e1b, et(2:end)];
           step_count = [step_count, 1:(numel(et)-1)];
-
   end 
 
 
@@ -40,7 +39,7 @@ r=5;
 %data points to be used in the regression
 x_regression = []; % e_n
 y_regression = []; % e_{n+1}
-filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
+% filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
 %iterate through the collected data
 for n = 1:length(step_count)
     %if the error is not too big or too small
@@ -83,24 +82,21 @@ fit_line_x = 10.^(-15:.01:1);
 fit_line_y = k*fit_line_x.^p;
 
 
-
-
 figure;
 % unfiltered data (all raw iterates, pink)
-loglog(eb, e1b, 'ro','MarkerFaceColor','r', 'markersize',2)
+loglog(eb, e1b, 'ro','MarkerFaceColor','r', 'markersize',4)
 hold on
 % filtered data (the subset used for the fit, navy)
-loglog(x_regression, y_regression, 'go','markerfacecolor','g' ,'markersize',2)
+loglog(x_regression, y_regression, 'bo','markerfacecolor','b' ,'markersize',4)
 % fit line (black)
 loglog(fit_line_x, fit_line_y, 'k-', 'linewidth', 2)
-xlabel (' \epsilon_{n} (−)')
-ylabel ((' \epsilon_{n+1} (−)'))
-title('Bisection Method')
-legend('Unfiltered Data', 'Filtered Data', 'Fit Line', 'Location','best')
-
-
-
-
+xlabel('Error at Current Iteration $\epsilon_n$ (-)', 'Interpreter', 'latex', 'FontSize', 14)
+ylabel('Error at Next Iteration $\epsilon_{n+1}$ (-)', 'Interpreter', 'latex', 'FontSize', 14)
+title('\bf Error Convergence of Bisection Method with Fit','Interpreter', 'latex','FontSize', 20)
+legend('Unfiltered Data', 'Filtered Data', 'Fit Line', 'Location','best','Interpreter','latex','FontSize', 12)
+set(gca, 'FontSize', 12)
+set(gca, 'XMinorTick', 'off','YMinorTick', 'off')
+end
 
 
 

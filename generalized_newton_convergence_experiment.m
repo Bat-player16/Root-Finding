@@ -1,22 +1,25 @@
 %starter code for convergence experiments
-function generalized_newton_convergence_experiment(test_fun,x0_ref)
+function [p,k,newton_root] = generalized_newton_convergence_experiment( ...
+    test_fun,x0_ref,dxtol,ftol,max_iter,dxmax,x0_list,filter_list)
 
 % find ref root
 target_root = fzero(test_fun,x0_ref);
 
-%number of trials we would like to perform
-num_iter = 1000;
+num_iter = length(x0_list);
 
-%solver parameters
-dxtol = 1e-12;
-ftol = 1e-12;
-max_iter = 200;
-dxmax = 1e10;
+%number of trials we would like to perform
+% num_iter = 1000;
+% 
+% %solver parameters
+% dxtol = 1e-12;
+% ftol = 1e-12;
+% max_iter = 200;
+% dxmax = 1e10;
 
 %list for the initial guesses that we would like
 %to use each trial. These guesses have all been chosen
 %so that each trial will converge to the same root
-x0_list = linspace(x0_ref-2,x0_ref+2,num_iter);
+% x0_list = linspace(x0_ref-2,x0_ref+2,num_iter);
 
 %list of estimate at current iteration (x_{n})
 %compiled across all trials
@@ -27,6 +30,7 @@ x_next_list = [];
 %keeps track of which iteration (n) in a trial
 %each data point was collected from
 index_list = [];
+newton_root = [];
 
 %loop through each trial
 for n = 1:num_iter
@@ -35,11 +39,14 @@ for n = 1:num_iter
     x0 = x0_list(n);
 
     % run gernealized newton solver
-    [~,exit_flag,x_list] = generalized_newton_solver_error(test_fun,x0,dxtol,ftol,max_iter,dxmax);
+    [x,exit_flag,x_list] = generalized_newton_solver_error(test_fun,x0,dxtol,ftol,max_iter,dxmax);
     
     % only if successful
     if exit_flag == 1&&length(x_list)>=2
-
+        
+        if isempty(newton_root)
+           newton_root = x;
+        end
         %at this point, input_list will be populated with the values that
         %the solver called at each iteration.
         %In other words, it is now [x_1,x_2,...x_n-1,x_n]
@@ -59,11 +66,6 @@ end
 abs_error_current = abs(x_current_list-target_root);
 abs_error_next = abs(x_next_list-target_root);
 %generate a loglog plot
-loglog(abs_error_current,abs_error_next,...
-    'ro','markerfacecolor','r','markersize',2);
-xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-title('Error Convergence Plot for Raw Data');
-hold on
 
 % Clean the data step 5
 %example for how to filter the error data
@@ -72,7 +74,7 @@ hold on
 %data points to be used in the regression
 x_regression = []; % e_n
 y_regression = []; % e_{n+1}
-filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
+%filter_list = [1e-15, 1e-2, 1e-14, 1e-2, 2];
 
 %iterate through the collected data
 for n=1:length(index_list)
@@ -90,14 +92,6 @@ for n=1:length(index_list)
     end % closes step 5 loop
 end 
 
-loglog(x_regression,y_regression,...
-    'bo','markerfacecolor','b','markersize',2);
-xlabel('\epsilon_n (-)'); ylabel('\epsilon_{n+1} (-)');
-title("Newton's Method Convergence Rate Plot");
-legend('Raw Data','Filtered Data','Location','best','FontSize',14);
-axis([1e-17,1e1,1e-17,1e1])
-% set(gca,'FontSize',12);
-
 % step 6 generate a loglog plot
 [p,k] = generalized_newton_generate_error_fit(x_regression,y_regression);
 
@@ -106,13 +100,27 @@ fprintf('k = %f\n', k);
 
 %example for how to plot fit line
 %generate x data on a logarithmic range
-fit_line_x = 10.^[-16:0.01:1];
+fit_line_x = 10.^(-14:0.01:4);
 
 %compute the corresponding y values
 fit_line_y = k*fit_line_x.^p;
 
-%plot on a loglog plot
-loglog(fit_line_x,fit_line_y,'k-','linewidth',2, 'DisplayName','Line of Best Fit');
+figure
+%unfiltered data
+h1 = loglog(abs_error_current, abs_error_next,'ro','MarkerFaceColor', 'r','MarkerSize', 4);
+hold on
+%filtered data
+h2 = loglog(x_regression, y_regression,'bo','MarkerFaceColor', 'b', 'MarkerSize', 4);
+% Fit line
+h3 = loglog(fit_line_x, fit_line_y,'k-','LineWidth', 2);
+xlabel('Error at Current Iteration $\epsilon_n$ (-)','Interpreter', 'latex','FontSize', 14)
+ylabel('Error at Next Iteration $\epsilon_{n+1}$ (-)','Interpreter', 'latex','FontSize', 14)
+title('\bf Error Convergence of Newton''s Method with Fit','Interpreter', 'latex','FontSize', 20)
+legend([h1 h2 h3], {'Unfiltered Data', 'Filtered Data', 'Fit Line'},'Location', 'best','Interpreter', 'latex','FontSize', 12)
+set(gca, 'FontSize', 12)
+set(gca, 'XMinorTick', 'off', 'YMinorTick', 'off')
+axis([1e-14, 1e4, 1e-18, 1e4])
+hold off
 
 % % step 7 find the first and second derivatives
 % x = 0.5;
