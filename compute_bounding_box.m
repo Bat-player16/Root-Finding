@@ -26,7 +26,7 @@ function [x_range,y_range] = compute_bounding_box(x0,y0,theta,egg_params)
     x_roots=[];
     y_roots=[];
 
-    s_guesses=linspace(0,.9,10)
+    s_guesses=linspace(0,.9,10);
  
     for i = 1:length(s_guesses)
     s_guess1=s_guesses(i);
